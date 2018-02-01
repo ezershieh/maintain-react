@@ -37,7 +37,7 @@ class Companylist extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="ml-4 mr-4 mt-4 mb-4">
                 <h4>公司列表</h4>
                 <Create_mask />
                 <table className="table table-bordered tables">
