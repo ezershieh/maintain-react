@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Projects from './component/project/Projects';
+import IndexMenu from './component/IndexMenu';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<Projects />, document.getElementById('root'));
+ReactDOM.render(<IndexMenu />, document.getElementById('root'));
 registerServiceWorker();

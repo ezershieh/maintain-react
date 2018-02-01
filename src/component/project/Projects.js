@@ -30,20 +30,22 @@ class Projects extends Component {
     }
 
     render() {
+        var newComponent;
         return (
             <div className="ml-4 mr-4 mt-4 mb-4">
                 <div>
                     <h3><b>我的项目</b></h3>
                 </div>
-                <div className="mr-4 mt-4 pr-4 pull-right">
-                    <button className="btn pull-right btn-success  mr-4 ">甲方公司列表</button>
-                    <button className="btn pull-right btn-success mr-4">创建项目</button>
-                </div>
+                    <div className="mr-4 mt-4 pr-4 pull-right">
+                        <button className="btn pull-right btn-danger mr-4">创建项目</button>
+                    </div>
                 <table className="table mr-4 mt-4 pr-4">
                     <thead>
-                    <tr className="bg-primary table-condensed ">
+                    <tr className="bg-info table-condensed ">
                         <th><h5>项目名称</h5></th>
+                        <th><h5>项目原计划时间</h5></th>
                         <th><h5>项目状态</h5></th>
+                        <th><h5>操作</h5></th>
                     </tr>
                     </thead>
                     <tbody>
