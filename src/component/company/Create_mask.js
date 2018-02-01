@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
 export default class Create_mask extends Component {
-   /* constructor(props) {
-        super(props);
-        /!* this.state = {
-             date: "",
-             title: "",
-             amount: ""
-         }*!/
-    }*/
     render() {
         return(
         <div>
