@@ -11,7 +11,7 @@ class Companylist extends Component {
     render() {
         return (
             <tr>
-                  <td>{this.props.name}</td>
+                <td>{this.props.name}</td>
                 <td>{this.props.manager_name}</td>
                 <td>{this.props.manager_phone}</td>
                 <td>
