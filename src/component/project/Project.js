@@ -7,6 +7,11 @@ class Project extends Component {
 
     }
 
+    handleDetailClick(){
+        this.props.handleProjectDetailClick(this.props.project);
+    }
+
+
     render() {
         let projectState;
         let stateType;
@@ -35,23 +40,20 @@ class Project extends Component {
         return (
             <tr className="center-block table-bordered">
                 <td>
-
-                        <h5>{this.props.project.name}</h5>
-                </td><td className="text-muted">
-
-                        {stareDate} - {endDate}
-
+                    <h5>{this.props.project.name}</h5>
+                </td>
+                <td className="text-muted">
+                    {stareDate} - {endDate}
                 </td>
                 <td className={`${stateType} center-block`}>
                     <h6>
                         <b>{projectState}</b>
                     </h6>
-
                 </td>
                 <td className="table-condensed">
-                    <button className="btn btn-primary mr-4 ml-4">详情</button>
-                    <button className="btn btn-info mr-4 ">编辑</button>
-                    <button className="btn btn-danger mr-4">删除</button>
+                    <button className="btn btn-primary mr-1 ml-1" onClick={this.handleDetailClick.bind(this)}>详情</button>
+                    <button className="btn btn-info mr-1 ">编辑</button>
+                    <button className="btn btn-danger mr-1">删除</button>
                 </td>
             </tr>
         );

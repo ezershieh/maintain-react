@@ -1,0 +1,69 @@
+import React, {Component} from 'react';
+
+export default class ProjectDetail extends Component {
+
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        let bidState = "未中标";
+        switch (this.props.project.bidState) {
+            case 0:
+                bidState = "未中标";
+                break;
+            case 1:
+                bidState = "已中标";
+                break;
+        }
+        let projectState;
+        switch (this.props.project.projectState) {
+            case 0:
+                projectState = "未开工";
+                break;
+            case 1:
+                projectState = "已开工";
+                break;
+            case 2:
+                projectState = "已完工";
+                break;
+            case 3:
+                projectState = "已停工";
+                break;
+        }
+        let date = new Date(this.props.project.planStartDate);
+        let stareDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+        date = new Date(this.props.project.planEndDate);
+        let endDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+        let auditDate;
+        if (this.props.project.auditDate === null || typeof ( this.props.project.auditDate) === "undefined") {
+            auditDate = "未审核"
+        } else {
+            date = new Date(this.props.project.auditDate);
+            auditDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+        }
+        let createDate;
+        date = new Date(this.props.project.createTime);
+        createDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+        return(
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>项目名称：</b><span>{this.props.project.name}</span></li>
+                    <li class="list-group-item"><b>项目负责人：</b><span>{this.props.project.managerName}</span></li>
+                    <li class="list-group-item"><b>投标状态：</b><span>{bidState}</span></li>
+                    <li class="list-group-item"><b>项目状态：</b><span>{projectState}</span></li>
+                    <li class="list-group-item"><b>项目原定计划日期：</b><span>{stareDate} - {endDate}</span></li>
+                    <li class="list-group-item"><b>业主单位：</b><span>{this.props.project.owenerUnitName}</span></li>
+                    <li class="list-group-item"><b>建设单位：</b><span>{this.props.project.constructUnitName}</span></li>
+                    <li class="list-group-item"><b>项目备注：</b><span>{this.props.project.mark}</span></li>
+                    <li class="list-group-item"><b>项目说明：</b><span>{this.props.project.caption}</span></li>
+                    <li class="list-group-item"><b>审核人：</b><span>{this.props.project.auditPersonName}</span></li>
+                    <li class="list-group-item"><b>审核日期：</b><span>{auditDate}</span></li>
+                    <li class="list-group-item"><b>创建人：</b><span>{this.props.project.createPersonName}</span></li>
+                    <li class="list-group-item"><b>创建日期：</b><span>{createDate}</span></li>
+                </ul>
+            </div>
+        );
+    }
+
+}

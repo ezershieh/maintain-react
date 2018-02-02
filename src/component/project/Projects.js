@@ -25,12 +25,11 @@ class Projects extends Component {
             error => console.log(error));
     }
 
-    handleProjectClick(event) {
-
+    handleProjectDetailClick(project) {
+        this.props.handleProjectDetailOnClick(project);
     }
 
     render() {
-        var newComponent;
         return (
             <div className="ml-4 mr-4 mt-4 mb-4">
                 <div>
@@ -49,7 +48,7 @@ class Projects extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.projects.map(project => <Project onClick={this.handleProjectClick.bind(this)}
+                    {this.state.projects.map(project => <Project handleProjectDetailClick={this.handleProjectDetailClick.bind(this)}
                                                                  key={project.id} project={project}/>)}
                     </tbody>
                 </table>
