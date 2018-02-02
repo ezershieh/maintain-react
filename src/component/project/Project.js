@@ -7,10 +7,18 @@ class Project extends Component {
 
     }
 
+    handleDeleteClick(){
+        let alertContent = {
+            tittle:"警告",
+            content:"确定要删除 "+this.props.project.name+ " 这个项目吗？",
+            dataId:this.props.project.id
+        }
+        this.props.handleDeleteClick(alertContent);
+    }
+
     handleDetailClick(){
         this.props.handleProjectDetailClick(this.props.project);
     }
-
 
     render() {
         let projectState;
@@ -53,7 +61,7 @@ class Project extends Component {
                 <td className="table-condensed">
                     <button className="btn btn-primary mr-1 ml-1" onClick={this.handleDetailClick.bind(this)}>详情</button>
                     <button className="btn btn-info mr-1 ">编辑</button>
-                    <button className="btn btn-danger mr-1">删除</button>
+                    <button className="btn btn-danger mr-1" onClick={this.handleDeleteClick.bind(this)}>删除</button>
                 </td>
             </tr>
         );

@@ -13,7 +13,7 @@ class Projects extends Component {
 
     componentDidMount() {
         const data = {
-            uId: 1
+            uId: RecordsAPI.uId
         }
         RecordsAPI.getProjects(data).then(
             response => {
@@ -29,12 +29,17 @@ class Projects extends Component {
         this.props.handleProjectDetailOnClick(project);
     }
 
+    handleDeleteClick(alertContent){
+        this.props.handleAlertShow(alertContent);
+    }
+
     render() {
         return (
-            <div className="ml-4 mr-4 mt-4 mb-4">
-                <div>
-                    <h3><b>我的项目</b></h3>
+            <div >
+                <div className="bg-info pl-4 pr-4 pb-1">
+                    <h6>我的项目</h6>
                 </div>
+                <div className="ml-4 mr-4 mb-4 mt-4">
                     <div className="mr-4 mt-4 pr-4 pull-right">
                         <button className="btn pull-right btn-danger mr-4">创建项目</button>
                     </div>
@@ -49,11 +54,12 @@ class Projects extends Component {
                     </thead>
                     <tbody>
                     {this.state.projects.map(project => <Project handleProjectDetailClick={this.handleProjectDetailClick.bind(this)}
+                                                                 handleDeleteClick = {this.handleDeleteClick.bind(this)}
                                                                  key={project.id} project={project}/>)}
                     </tbody>
                 </table>
+                </div>
             </div>
-
         );
     }
 }

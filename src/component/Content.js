@@ -12,22 +12,32 @@ class Content extends Component {
         }
     }
 
+    handleAlertShow(alertContent){
+        this.props.handleAlertShow(alertContent);
+    }
+
     handleProjectDetailOnClick(project) {
         this.props.handleOnMenuChange(2);
         this.setState({
-            project: project
+            project:project
         });
+    }
+
+    handleProjectListOnClick(){
+        this.props.handleOnMenuChange(0);
     }
 
     render() {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
+                                  handleAlertShow = {this.handleAlertShow.bind(this)}
                                   contentIndex={this.state.contentIndex}/>);
             case 1:
                 return ( <Companylist contentIndex={this.state.contentIndex}/>);
             case 2:
-                return (<ProjectDetail project={this.state.project}/>);
+                return (<ProjectDetail handleProjectListOnClick={this.handleProjectListOnClick.bind(this)}
+                                       project={this.state.project}/>);
             case 3:
                 return (<div></div>);
             case 4:
