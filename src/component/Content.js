@@ -12,6 +12,15 @@ class Content extends Component {
         }
     }
 
+    handleAlertHidden(){
+        this.props.handleAlertHidden();
+    }
+
+    handleDelete(data){
+        console.log("content-handleDelete");
+        this.refs.projects.handleDelete(data);
+    }
+
     handleAlertShow(alertContent){
         this.props.handleAlertShow(alertContent);
     }
@@ -32,7 +41,8 @@ class Content extends Component {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
-                                  contentIndex={this.state.contentIndex}/>);
+                                  handleAlertHidden={this.handleAlertHidden.bind(this)}
+                                  contentIndex={this.state.contentIndex} ref="projects"/>);
             case 1:
                 return ( <Companylist contentIndex={this.state.contentIndex}/>);
             case 2:

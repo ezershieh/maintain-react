@@ -10,8 +10,8 @@ class Project extends Component {
     handleDeleteClick(){
         let alertContent = {
             tittle:"警告",
-            content:"确定要删除 "+this.props.project.name+ " 这个项目吗？",
-            dataId:this.props.project.id
+            content:"确定要删除 \""+this.props.project.name+ "\" 这个项目吗？",
+            data:this.props.project
         }
         this.props.handleDeleteClick(alertContent);
     }

@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import Content from './Content';
 import * as RecordsAPI from '../utils/RecordsAPI';
+import { Modal, Button } from 'antd';
+const confirm = Modal.confirm;
+
 
 class IndexMenu extends Component {
 
@@ -29,53 +32,64 @@ class IndexMenu extends Component {
         }
     }
 
-    handleAlertConfirmClick(index,data) {
-        switch (index) {
-            case 0:
-                let postDdatas = {
-                    uId: RecordsAPI.uId,
-                    pId: data.id
-                }
-                RecordsAPI.delectProjects(postDdatas).then(
-                    response => {
-                        console.log(response);
-                        this.setState({
-                            index: this.state.index,
-                            alertShow: this.state.alertShow,
-                            alertContent: this.state.alertContent
-                        });
-                    },
-                    error => {
-                        console.log(error);
-                    });
-                break;
-            case 1:
-                break;
-        }
-        this.setState({
-            index: this.state.index,
-            alertContent: {},
-            alertShow: false
-        });
-    }
-
     handleAlertShow(alertContent) {
         this.setState({
-            index: this.state.index,
-            alertContent: alertContent,
-            alertShow: true
+            ...this.state,
+            alertContent:alertContent,
+            alertShow:true
         });
     }
 
-    handleOnMenuChange(index){
+    handleAlertHidden(){
         this.setState({
+            ...this.state,
+            alertShow:false
+        });
+    }
+
+    handleOnMenuChange(index) {
+        this.setState({
+            ...this.state,
             index: index,
             alertContent: this.state.alertContent,
             alertShow: this.state.alertShow
         });
     }
 
+    handleOk = () => {
+        switch (this.state.index) {
+            case 0:
+                let postDdatas = {
+                    uId: RecordsAPI.uId,
+                    pId: this.state.alertContent.data.id
+                }
+                RecordsAPI.delectProjects(postDdatas).then(
+                    response => {
+                        console.log(response);
+                        this.refs.contentView.handleDelete(this.state.alertContent.data);
+                    },
+                    error => {
+                        console.log(error);
+                        this.setState({
+                            ...this.state,
+                            alertShow:false
+                        });
+                    });
+                break;
+            case 1:
+                break;
+        }
+    }
+    handleCancel = () => {
+        console.log('Clicked cancel button');
+        this.setState({
+            ...this.state,
+            alertShow:false
+        });
+    }
+
     render() {
+        const { visible, confirmLoading, ModalText } = this.state;
         return (
             <div>
                 <div>
@@ -87,35 +101,16 @@ class IndexMenu extends Component {
                                 onClick={this.handleOnClick.bind(this)}>甲方公司列表
                         </button>
                     </div>
-                    <Content index={this.state.index} handleOnMenuChange ={this.handleOnMenuChange.bind(this)}
-                             handleAlertShow={this.handleAlertShow.bind(this)}/>
+                    <Content index={this.state.index} handleOnMenuChange={this.handleOnMenuChange.bind(this)}
+                             handleAlertShow={this.handleAlertShow.bind(this)} ref="contentView"
+                             handleAlertHidden={this.handleAlertHidden.bind(this)}/>
                 </div>
-                <div className="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true" data-backdrop="false" data-show={this.state.alertShow}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×
-                                </button>
-                                <h4 className="modal-title" id="myModalLabel">
-                                    {this.state.alertContent.tittle}
-                                </h4>
-                            </div>
-                            <div className="modal-body">
-                                {this.state.alertContent.content}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-primary"
-                                        data-dismiss="modal">关闭
-                                </button>
-                                <button type="button" className="btn btn-danger"
-                                        onClick={this.handleAlertConfirmClick.bind(this)}>
-                                    确定
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Modal title={this.state.alertContent.tittle}
+                       visible={this.state.alertShow}
+                       onOk={this.handleOk}
+                       onCancel={this.handleCancel}>
+                    <p>{this.state.alertContent.content}</p>
+                </Modal>
             </div>
         )
     }
