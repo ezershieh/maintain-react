@@ -56,6 +56,7 @@ class Content extends Component {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
+                                  handleCreateProject = {this.handleCreateProject.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
                                   handleAlertHidden={this.handleAlertHidden.bind(this)}
                                   contentIndex={this.state.contentIndex} ref="projects"/>);
