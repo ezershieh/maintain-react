@@ -4,12 +4,12 @@ import Companyform from './Companyform'
 import './Companylist.css'
 import * as RecordsAPI from '../../utils/RecordsAPI'
 class Companylist extends Component {
-     constructor(props) {
-       super(props);
-         this.state={
-             companylist:[]
-         }
-   }
+    constructor(props) {
+        super(props);
+        this.state={
+            companylist:[]
+        }
+    }
     componentDidMount(){
         const data = {
             uId: 1
@@ -17,28 +17,31 @@ class Companylist extends Component {
         RecordsAPI.getProjectsCompany(data).then(
             response => {
                 console.log(response);
-
-                // if (response.code == 1)
                 this.setState({companylist: response.data});
             },
             error => console.log(error)
         );
     }
 
-    deleteform(){
-       /* this.setState({
-            const companyformIndex = this.state.companylist.indexOf(companylist);
-            const newCompanylist = this.state.companylist.filter( (item, index) => index !== companyformIndex);
-            this.setState({
-                companylist: newCompanylist
-            });
-            console.log(companyform)
-        });*/
+    deleteForm(companyform){
+        this.setState({
+            /* const companyformIndex = this.state.companylist.indexOf(companylist);
+             const newCompanylist = this.state.companylist.filter( (item, index) => index !== companyformIndex);
+             this.setState({
+                 companylist: newCompanylist
+             });
+             console.log(companyform)*/
+        });
     }
+
+    handleInformationOnClick(company){
+        this.props.handleInformationOnClick(company);
+    }
+
     render() {
         return (
             <div className="ml-4 mr-4 mt-4 mb-4">
-                <h4>公司列表</h4>
+                <h4>甲方公司列表</h4>
                 <Create_mask />
                 <table className="table table-bordered tables">
                     <thead>
@@ -50,13 +53,14 @@ class Companylist extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {this.state.companylist.map((companyform) => (
-                            <Companyform
-                                key={companyform.id}
-                                companyform={companyform}
-                                handleDelete={this.deleteform.bind(this)}
-                            />
-                        ))}
+                    {this.state.companylist.map((companyform) => (
+                        <Companyform
+                            key={companyform.id}
+                            companyform={companyform}
+                            handleDelete={this.deleteForm.bind(this)}
+                            handleInformationOnClick={this.handleInformationOnClick.bind(this)}
+                        />
+                    ))}
                     </tbody>
                 </table>
             </div>

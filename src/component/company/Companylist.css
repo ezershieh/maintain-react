@@ -15,4 +15,9 @@ table tbody td{
 .tabs{
     background:#cccccc;
 }
-
+.ant-calendar-picker-input ant-input{
+    min-width:80px;
+}
+.btncre{
+    margin-bottom:20px;
+}
