@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Projects from './project/Projects';
 import ProjectDetail from './project/ProjectDetail';
+import ProjectCreate from './project/ProjectCreate';
 import Companylist from './company/Companylist';
 import Information from './company/Information';
 class Content extends Component {
