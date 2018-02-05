@@ -103,10 +103,10 @@ class ProjectCreate extends Component {
     }
 
     isCanSubmit() {
-        if (typeof (this.state.project.auditPersonId) === "undefined")
-            return false;
-        if (typeof (this.state.project.name) === "undefined" || this.state.project.na === "")
-            return false;
+        if (typeof (this.state.project.managerId) === "undefined"){
+            return false;}
+        if (typeof (this.state.project.name) === "undefined" || this.state.project.na === ""){
+            return false;}
         // if()
         return true;
     }
