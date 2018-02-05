@@ -48,11 +48,10 @@ class IndexMenu extends Component {
     }
 
     handleOnMenuChange(index) {
+        console.log("主页相应");
         this.setState({
             ...this.state,
-            index: index,
-            alertContent: this.state.alertContent,
-            alertShow: this.state.alertShow
+            index: index
         });
     }
 
@@ -85,6 +84,13 @@ class IndexMenu extends Component {
         this.setState({
             ...this.state,
             alertShow:false
+        });
+    }
+
+    handleCreateProject(){
+        this.setState({
+            ...this.state,
+            index:3
         });
     }
 

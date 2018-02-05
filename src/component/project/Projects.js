@@ -26,7 +26,7 @@ export default class Projects extends Component {
     }
 
     handleDelete(project) {
-        console.log("projects-handleDelete" );
+        console.log("projects-handleDelete");
         const projectIndex = this.state.projects.indexOf(project);
         const newProjects = this.state.projects.filter((item, index) => index !== projectIndex);
         this.setState({
@@ -43,18 +43,23 @@ export default class Projects extends Component {
         this.props.handleAlertShow(alertContent);
     }
 
+    handleCreateProject() {
+        console.log("创建项目点击");
+        this.props.handleCreateProject();
+    }
+
     render() {
         const {visible, confirmLoading, ModalText} = this.state;
         let projects;
-        if(this.state.projects.size>0){
+        if (this.state.projects.length > 0) {
             console.log("有项目");
-            projects =(
+            projects = (
                 this.state.projects.map(project =>
                     <Project handleProjectDetailClick={this.handleProjectDetailClick.bind(this)}
                              handleDeleteClick={this.handleDeleteClick.bind(this)}
                              key={project.id} project={project}/>)
             );
-        }else{
+        } else {
             console.log("无项目");
             <div>
                 暂无项目
@@ -68,7 +73,9 @@ export default class Projects extends Component {
                 </div>
                 <div className="ml-4 mr-4 mb-4 mt-4">
                     <div className="mr-4 mt-4 pr-4 pull-right">
-                        <button className="btn pull-right btn-danger mr-4">创建项目</button>
+                        <button className="btn pull-right btn-danger mr-4"
+                                onClick={this.handleCreateProject.bind(this)}>创建项目
+                        </button>
                     </div>
                     <table className="table mr-4 mt-4 pr-4">
                         <thead>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Projects from './project/Projects';
 import ProjectDetail from './project/ProjectDetail';
+import ProjectCreate from './project/ProjectCreate';
 import Companylist from './company/Companylist';
 
 class Content extends Component {
@@ -36,12 +37,18 @@ class Content extends Component {
         this.props.handleOnMenuChange(0);
     }
 
+    handleCreateProject(){
+        console.log("内容相应");
+        this.props.handleOnMenuChange(3);
+    }
+
     render() {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
                                   handleAlertHidden={this.handleAlertHidden.bind(this)}
+                                  handleCreateProject = {this.handleCreateProject.bind(this)}
                                   contentIndex={this.state.contentIndex} ref="projects"/>);
             case 1:
                 return ( <Companylist contentIndex={this.state.contentIndex}/>);
@@ -49,7 +56,7 @@ class Content extends Component {
                 return (<ProjectDetail handleProjectListOnClick={this.handleProjectListOnClick.bind(this)}
                                        project={this.state.project}/>);
             case 3:
-                return (<div></div>);
+                return (<ProjectCreate isCreate = {true}></ProjectCreate>);
             case 4:
                 return (<div></div>);
             case 5:
