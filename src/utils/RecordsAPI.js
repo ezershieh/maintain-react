@@ -1,7 +1,8 @@
 import $ from 'jquery';
 
 // const api = "http://localhost:8080";
-const api = "http://10.100.1.217:8080";
+const api = "http://10.100.1.230:8080";
+//const api = "http://10.100.1.217:8080";
 
 export const uId = 1;
 
@@ -15,4 +16,6 @@ export const createProject = (data) => $.post(`${api}/project/insert`, data)
 
 export const getProjectsCompany = (data) => $.post(`${api}/project_company/select`, data)
 
-export const remove =(id) => $.ajax({url: `${api}/project_company/select/${id}`,type: 'DELETE'})
+export const removeProjectsCompany =(data) => $.post(`${api}/project_company/delect`, data)
+export const updateProjectsCompany =(data) => $.post(`${api}/project_company/update`, data)
+export const createProjectsCompany = (data) => $.post(`${api}/project_company/insert`, data)
