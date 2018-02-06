@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, DatePicker, Col} from 'antd';
-import 'antd/dist/antd.css';
 import './Companylist.css'
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -27,8 +26,8 @@ const CollectionCreateForm = Form.create()(
                 onCancel={onCancel}
                 onOk={onCreate}
             >
-                <Form layout="vertical">
-                    <FormItem label="公司名称">
+                <Form layout="vertical" >
+                    <FormItem label="公司名称" >
                         {getFieldDecorator('title', {
                             rules: [{ required: true, message: '公司名称不能为空!' }],
                         })(
@@ -52,29 +51,19 @@ const CollectionCreateForm = Form.create()(
                     <FormItem label="备注">
                         {getFieldDecorator('description')(<Input type="textarea" />)}
                     </FormItem>
-                    <FormItem label="inline" {...formItemLayout}>
-                        <Col span={10}>
-                            <FormItem validateStatus="error" help="Please select the correct date">
-                                <DatePicker />
-                            </FormItem>
-                        </Col>
-                        <Col span={2}>
-                         <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }} className="daper">
-                                 -
-                         </span>
-                        </Col>
-                        <Col span={10}>
-                            <FormItem>
-                                <DatePicker />
-                            </FormItem>
-                        </Col>
-                    </FormItem>
                 </Form>
             </Modal>
         );
     }
 );
 class Create_mask extends Component {
+    /* handleSubmit(){
+         const data ={
+             name:this.state.name,
+             managerName:this.state.managerName,
+             managerPhone:this.state.managerPhone
+         }
+     }*/
     state = {
         visible: false,
     };
@@ -114,4 +103,8 @@ class Create_mask extends Component {
     }
 }
 export default Create_mask;
+
+
+
+
 

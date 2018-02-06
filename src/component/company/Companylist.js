@@ -22,27 +22,53 @@ class Companylist extends Component {
             error => console.log(error)
         );
     }
-
-    deleteForm(companyform){
+    /*公司删除*/
+    handleDeleteClick(companyform) {
+        const companyformIndex = this.state.companylist.indexOf(companyform);
+        const newCompanylist = this.state.companylist.filter( (item, index) => index !== companyformIndex);
         this.setState({
-            /* const companyformIndex = this.state.companylist.indexOf(companylist);
-             const newCompanylist = this.state.companylist.filter( (item, index) => index !== companyformIndex);
-             this.setState({
-                 companylist: newCompanylist
-             });
-             console.log(companyform)*/
+            companylist: newCompanylist
         });
+        console.log(companyform)
     }
 
     handleInformationOnClick(company){
         this.props.handleInformationOnClick(company);
     }
 
+  /*  编辑*/
+    handleUpdate(companyform,data){
+        const companyformIndex = this.state.companylist.indexOf(companyform);
+        const newCompanylist= this.state.companylist.map( (item, index) => {
+            if(index !== companyformIndex) {
+                return item;
+            }
+            return {
+                ...item,
+                ...data
+            };
+        });
+        this.setState({
+            companylist: newCompanylist
+        });
+    }
+
+    addRecord(companyform) {
+        this.setState({
+            error: null,
+            isLoaded: true,
+            compantlist: [
+                ...this.state.companylist,
+                companyform
+            ]
+        })
+    }
+
     render() {
         return (
             <div className="ml-4 mr-4 mt-4 mb-4">
                 <h4>甲方公司列表</h4>
-                <Create_mask />
+                <Create_mask handleNewRecord={this.addRecord.bind(this)}/>
                 <table className="table table-bordered tables">
                     <thead>
                     <tr className="tabs">
@@ -57,8 +83,9 @@ class Companylist extends Component {
                         <Companyform
                             key={companyform.id}
                             companyform={companyform}
-                            handleDelete={this.deleteForm.bind(this)}
                             handleInformationOnClick={this.handleInformationOnClick.bind(this)}
+                            handleDeleteClick={this.handleDeleteClick.bind(this)}
+                            handleEditCompanyform={this.handleUpdate.bind(this)}
                         />
                     ))}
                     </tbody>
