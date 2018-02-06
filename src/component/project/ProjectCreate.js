@@ -3,7 +3,7 @@ import {Form, Input, Button, DatePicker, Select, Radio} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
 import * as common from '../../utils/common';
-import * as RecordsAPI from '../../utils/RecordsAPI'
+import * as RecordsAPI from '../../utils/RecordsAPI';
 
 class ProjectCreate extends Component {
 
