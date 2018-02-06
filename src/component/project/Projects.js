@@ -43,9 +43,9 @@ export default class Projects extends Component {
         this.props.handleAlertShow(alertContent);
     }
 
-    handleCreateProject() {
+    handleCreateProjectClick() {
         console.log("创建项目点击");
-        this.props.handleCreateProject();
+        this.props.handleCreateProjectClick();
     }
 
     render() {
@@ -74,7 +74,7 @@ export default class Projects extends Component {
                 <div className="ml-4 mr-4 mb-4 mt-4">
                     <div className="mr-4 mt-4 pr-4 pull-right">
                         <button className="btn pull-right btn-danger mr-4"
-                                onClick={this.handleCreateProject.bind(this)}>创建项目
+                                onClick={this.handleCreateProjectClick.bind(this)}>创建项目
                         </button>
                     </div>
                     <table className="table mr-4 mt-4 pr-4">

@@ -85,7 +85,7 @@ class ProjectCreate extends Component {
     handleSelectChange(value, label) {
         if (typeof (value) === "undefined") {
             let project = this.state.project;
-            project.auditPersonId = 0;
+            project.auditPersonId = null;
             this.setState({
                 ...this.state.project,
                 project: project
@@ -103,23 +103,87 @@ class ProjectCreate extends Component {
     }
 
     isCanSubmit() {
-        if (typeof (this.state.project.managerId) === "undefined"){
-            return false;}
-        if (typeof (this.state.project.name) === "undefined" || this.state.project.na === ""){
-            return false;}
-        // if()
+        if (typeof (this.state.project.managerId) === "undefined") {
+            return false;
+        }
+        if (typeof (this.state.project.name) === "undefined" || this.state.project.name === "") {
+            return false;
+        }
+        if (typeof (this.state.project.bidState) === "undefined") {
+            return false;
+        }
+        if (typeof (this.state.project.projectState) === "undefined") {
+            return false;
+        }
+        if (typeof (this.state.project.planStartDate) === "undefined" || this.state.project.planStartDate === null) {
+            return false;
+        }
+        if (typeof (this.state.project.planEndDate) === "undefined" || this.state.project.planEndDate === null) {
+            return false;
+        }
         return true;
     }
 
     rangePickerChange([start, end]) {
+        console.log(start);
         let project = this.state.project;
-        project.planStartDate = start.format("YYYY-MM-DD");
-        project.planEndDate = end.format("YYYY-MM-DD");
+        if (typeof (start) === "undefined") {
+            project.planStartDate = null;
+            project.planEndDate = null;
+        } else {
+            project.planStartDate = start;
+            project.planEndDate = end;
+        }
+        this.setState({
+            ...this.state,
+            project:project
+        });
         console.log(this.state.project);
     }
 
-    handleSubmit(){
-        console.log("点击按钮");
+    handleSubmit() {
+        let startDate,endDate;
+        startDate = this.state.project.planStartDate.format('YYYY-MM-DD HH:mm:ss');
+        endDate = this.state.project.planEndDate.format('YYYY-MM-DD HH:mm:ss');
+
+        let data = {
+            uId:RecordsAPI.uId,
+            startData:startDate,
+            endDate:endDate,
+            name:this.state.project.name,
+            bidState:this.state.project.bidState,
+            owenerUnitId:this.state.project.owenerUnitId,
+            constructUnitId:this.state.project.constructUnitId,
+            depId:RecordsAPI.companyId,
+            managerId:this.state.project.managerId
+        }
+        if(typeof (this.state.project.auditPersonId)!=="undefined"&&this.state.project.auditPersonId!=null){
+            data={
+                ...data,
+                auditPersonId:this.state.project.auditPersonId
+            }
+        }
+        if(typeof (this.state.project.mark)!=="undefined"){
+            data={
+                ...data,
+                mark:this.state.project.mark
+            }
+        }
+        if(typeof (this.state.project.caption)!=="undefined"){
+            data={
+                ...data,
+                caption:this.state.project.caption
+            }
+        }
+        RecordsAPI.createProject(data).then(
+            response =>{
+                if(response.code===1){
+                    this.props.handleCreateProject();
+                }
+            },
+            error=>{
+                console.log(error);
+            });
     }
 
     render() {
@@ -201,8 +265,9 @@ class ProjectCreate extends Component {
                     label="项目原定计划日期"
                 >
                     <RangePicker placeholder={["选择开始日期", "选择结束日期"]}
-                                 name={"date"}
+                                 name={"date"} format={"YYYY-MM-DD"}
                                  onChange={this.rangePickerChange.bind(this)}
+                                 value={[this.state.project.planStartDate,this.state.project.planEndDate]}
                     />
                 </FormItem>
                 <FormItem
@@ -263,7 +328,7 @@ class ProjectCreate extends Component {
                         sm: {span: 16, offset: 8},
                     }}
                 >
-                    <Button type="primary"  onClick={this.handleSubmit.bind(this)}
+                    <Button type="primary" onClick={this.handleSubmit.bind(this)}
                             disabled={!this.isCanSubmit()}>{buttonText}</Button>
                 </FormItem>
             </Form>);
