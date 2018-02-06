@@ -51,13 +51,13 @@ export default class ProjectDetail extends Component {
         createDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
         return(
             <div>
-                <div className="bg-info pl-4 pr-4 pb-1">
-                    <tr>
-                        <td onClick={this.handleProjectListOnClick.bind(this)}><h6><b>我的项目 > </b></h6></td>
-                        <td></td>
-                        <td><h6>项目详情</h6></td>
-                    </tr>
-                </div>
+                {/*<div className="bg-info pl-4 pr-4 pb-1">*/}
+                    {/*<tr>*/}
+                        {/*<td onClick={this.handleProjectListOnClick.bind(this)}><h6><b>我的项目 > </b></h6></td>*/}
+                        {/*<td></td>*/}
+                        {/*<td><h6>项目详情</h6></td>*/}
+                    {/*</tr>*/}
+                {/*</div>*/}
                 <div className="pl-4 pr-4 pt-4 pb-4">
                     <ul class="list-group">
                         <li class="list-group-item"><b>项目名称：</b><span>{this.props.project.name}</span></li>

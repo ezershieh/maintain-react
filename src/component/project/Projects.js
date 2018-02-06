@@ -68,9 +68,9 @@ export default class Projects extends Component {
 
         return (
             <div>
-                <div className="bg-info pl-4 pr-4 pb-1">
-                    <h6>我的项目</h6>
-                </div>
+                {/*<div className="bg-info pl-4 pr-4 pb-1">*/}
+                    {/*<h6>我的项目</h6>*/}
+                {/*</div>*/}
                 <div className="ml-4 mr-4 mb-4 mt-4">
                     <div className="mr-4 mt-4 pr-4 pull-right">
                         <button className="btn pull-right btn-danger mr-4"

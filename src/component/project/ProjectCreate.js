@@ -316,7 +316,6 @@ class ProjectCreate extends Component {
                 >
                     <Select placeholder="选择审核人(选填)" allowClear={true}
                             onChange={this.handleSelectChange.bind(this)}
-                            value={this.state.project.auditPersonId}
                     >
                         {this.state.members.map(member => <Option value={member.id} ref={"auditPersonId"}
                                                                   key={member.id}>{member.createName}</Option>)}
