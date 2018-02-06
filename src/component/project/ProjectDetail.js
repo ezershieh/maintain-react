@@ -59,20 +59,20 @@ export default class ProjectDetail extends Component {
                     {/*</tr>*/}
                 {/*</div>*/}
                 <div className="pl-4 pr-4 pt-4 pb-4">
-                    <ul class="list-group">
-                        <li class="list-group-item"><b>项目名称：</b><span>{this.props.project.name}</span></li>
-                        <li class="list-group-item"><b>项目负责人：</b><span>{this.props.project.managerName}</span></li>
-                        <li class="list-group-item"><b>投标状态：</b><span>{bidState}</span></li>
-                        <li class="list-group-item"><b>项目状态：</b><span>{projectState}</span></li>
-                        <li class="list-group-item"><b>项目原定计划日期：</b><span>{stareDate} - {endDate}</span></li>
-                        <li class="list-group-item"><b>业主单位：</b><span>{this.props.project.owenerUnitName}</span></li>
-                        <li class="list-group-item"><b>建设单位：</b><span>{this.props.project.constructUnitName}</span></li>
-                        <li class="list-group-item"><b>项目备注：</b><span>{this.props.project.mark}</span></li>
-                        <li class="list-group-item"><b>项目说明：</b><span>{this.props.project.caption}</span></li>
-                        <li class="list-group-item"><b>审核人：</b><span>{this.props.project.auditPersonName}</span></li>
-                        <li class="list-group-item"><b>审核日期：</b><span>{auditDate}</span></li>
-                        <li class="list-group-item"><b>创建人：</b><span>{this.props.project.createPersonName}</span></li>
-                        <li class="list-group-item"><b>创建日期：</b><span>{createDate}</span></li>
+                    <ul className="list-group">
+                        <li className="list-group-item"><b>项目名称：</b><span>{this.props.project.name}</span></li>
+                        <li className="list-group-item"><b>项目负责人：</b><span>{this.props.project.managerName}</span></li>
+                        <li className="list-group-item"><b>投标状态：</b><span>{bidState}</span></li>
+                        <li className="list-group-item"><b>项目状态：</b><span>{projectState}</span></li>
+                        <li className="list-group-item"><b>项目原定计划日期：</b><span>{stareDate} - {endDate}</span></li>
+                        <li className="list-group-item"><b>业主单位：</b><span>{this.props.project.owenerUnitName}</span></li>
+                        <li className="list-group-item"><b>建设单位：</b><span>{this.props.project.constructUnitName}</span></li>
+                        <li className="list-group-item"><b>项目备注：</b><span>{this.props.project.mark}</span></li>
+                        <li className="list-group-item"><b>项目说明：</b><span>{this.props.project.caption}</span></li>
+                        <li className="list-group-item"><b>审核人：</b><span>{this.props.project.auditPersonName}</span></li>
+                        <li className="list-group-item"><b>审核日期：</b><span>{auditDate}</span></li>
+                        <li className="list-group-item"><b>创建人：</b><span>{this.props.project.createPersonName}</span></li>
+                        <li className="list-group-item"><b>创建日期：</b><span>{createDate}</span></li>
                     </ul>
                 </div>
             </div>

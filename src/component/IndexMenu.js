@@ -114,6 +114,8 @@ class IndexMenu extends Component {
                 <Modal title={this.state.alertContent.tittle}
                        visible={this.state.alertShow}
                        onOk={this.handleOk}
+                       okText={"确定"}
+                       cancelText={"取消"}
                        onCancel={this.handleCancel}>
                     <p>{this.state.alertContent.content}</p>
                 </Modal>

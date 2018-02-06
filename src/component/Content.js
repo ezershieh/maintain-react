@@ -61,12 +61,21 @@ class Content extends Component {
         this.props.handleOnMenuChange(3);
     }
 
+    handleProjectEditClick(project){
+        console.log("内容项目编辑");
+        this.props.handleOnMenuChange(4);
+        this.setState({
+            ...this.state,
+            project:project
+        });
+    }
 
     render() {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
                                   handleCreateProjectClick = {this.handleCreateProjectClick.bind(this)}
+                                  handleProjectEditClick = {this.handleProjectEditClick.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
                                   handleAlertHidden={this.handleAlertHidden.bind(this)}
                                   contentIndex={this.state.contentIndex} ref="projects"/>);
@@ -80,7 +89,7 @@ class Content extends Component {
             case 3:
                 return (<ProjectCreate isCreate = {true} handleCreateProject={this.handleCreateProject.bind(this)}></ProjectCreate>);
             case 4:
-                return (<div></div>);
+                return (<ProjectCreate isCreate = {false} project={this.state.project} handleCreateProject={this.handleCreateProject.bind(this)}></ProjectCreate>);
             case 5:
                 return (<Information handleCompanyformOnClick={this.handleCompanyformOnClick.bind(this)}
                                         company={this.state.company}/>);

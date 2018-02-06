@@ -20,6 +20,11 @@ class Project extends Component {
         this.props.handleProjectDetailClick(this.props.project);
     }
 
+    handleEditClick(){
+        console.log("编辑");
+        this.props.handleProjectEditClick(this.props.project);
+    }
+
     render() {
         let projectState;
         let stateType;
@@ -60,7 +65,7 @@ class Project extends Component {
                 </td>
                 <td className="table-condensed">
                     <button className="btn btn-primary mr-1 ml-1" onClick={this.handleDetailClick.bind(this)}>详情</button>
-                    <button className="btn btn-info mr-1 ">编辑</button>
+                    <button className="btn btn-info mr-1 " onClick={this.handleEditClick.bind(this)}>编辑</button>
                     <button className="btn btn-danger mr-1" onClick={this.handleDeleteClick.bind(this)}>删除</button>
                 </td>
             </tr>
