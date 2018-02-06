@@ -1,22 +1,41 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import * as RecordsAPI from '../../utils/RecordsAPI'
 import 'antd/dist/antd.css';
-import { Modal, Button } from 'antd';
+import { Modal} from 'antd';
 
 class Companylist extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            edit: false
+        };
     }
-
+   /* 编辑*/
     handleToggle(){
-
+        this.setState({
+            edit: !this.state.edit
+        });
     }
-    /*   删除操作*/
-    handleDelete(event){
+    handleEdit(event) {
         event.preventDefault();
-        RecordsAPI.remove(this.props.companyform.id).then(
-            response => this.props.handleDeleteRecord(this.props.companyform)
+        const companyform = {
+            name: this.refs.name.value,
+            managerName: this.refs.managerName.value,
+            managerName: this.refs.managerPhone.value
+        }
+        /*数据请求响应，编辑后数据直接实时呈现*/
+        let PostData = {
+            uId: RecordsAPI.uId,
+            cId: this.props.companyform.id
+        }
+        RecordsAPI.updateProjectsCompany(PostData,companyform).then(
+            response => {
+                console.log(response)
+                this.setState({
+                    edit: false
+                });
+                this.props.handleEditCompanyform(this.props.companyform, response);
+            }
         ).catch(
             error => console.log(error.message)
         )
@@ -25,23 +44,36 @@ class Companylist extends Component {
     handleInformationOnClick(){
         this.props.handleInformationOnClick(this.props.companyform);
     }
-
+    /*   删除操作*/
+    state = { visible: false }
+    handleDeleteClick = () => {
+        this.setState({
+            visible: true,
+        });
+    }
     handleOk = (e) => {
-        alert(6666)
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+        let postDatas = {
+            uId: RecordsAPI.uId,
+            cId: this.props.companyform.id
+        }
+        RecordsAPI.removeProjectsCompany(postDatas).then(
+            response => this.props.handleDeleteClick(this.props.companyform)
+
+        ).catch(
+            error => console.log(error.message)
+        )
+    }
+    handleCancel = (e) => {
         console.log(e);
         this.setState({
             visible: false,
         });
     }
-    confirm() {
-        Modal.confirm({
-            title: 'Confirm',
-            content: 'Bla bla ...',
-            okText: '确定',
-            cancelText: '取消',
-        });
-    }
-    render() {
+    companyRom() {
         return (
             <tr>
                 <td>{this.props.companyform.name}</td>
@@ -49,34 +81,41 @@ class Companylist extends Component {
                 <td>{this.props.companyform.managerPhone}</td>
                 <td>
                     <button className="btn btn-info mr-1" onClick={this.handleToggle.bind(this)}>编辑</button>
-                    {/*<button className="btn btn-danger mr-1" onClick={this.handleDelete.bind(this)}>删除</button>*/}
-                    <Button className="btn btn-danger mr-1" onClick={this.confirm.bind(this)}>删除</Button>
+                    <button type="primary" className="btn btn-danger mr-1" onClick={this.handleDeleteClick.bind(this)}>删除</button>
+                    <Modal
+                        title="删除"
+                        visible={this.state.visible}
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                    >
+                        <p>确定要删除{this.props.companyform.name}公司吗？</p>
+                    </Modal>
                     <button className="btn btn-info" onClick={this.handleInformationOnClick.bind(this)}>详情</button>
                 </td>
             </tr>
         );
     }
 
-    /* companyDom() {
+     companyDom() {
          return (
              <tr>
                  <td><input type="text" className="form-control" defaultValue={this.props.companyform.name} ref="name" /></td>
                  <td><input type="text" className="form-control" defaultValue={this.props.companyform.managerName} ref="managerName" /></td>
                  <td><input type="text" className="form-control" defaultValue={this.props.companyform.managerPhone} ref="managerPhone" /></td>
                  <td>
-                     <button className="btn btn-info mr-1" onClick={this.handleUpdate.bind(this)}>编辑</button>
-                     <button className="btn btn-danger" onClick={this.handleToggle}>取消</button>
-                     <button className="btn btn-info" onCliak={this.handleLink.bind(this)}>详情</button>
+                     <button className="btn btn-info mr-1" onClick={this.handleEdit.bind(this)}>更新</button>
+                     <button className="btn btn-danger" onClick={this.handleToggle.bind(this)}>取消</button>
+                     <button className="btn btn-info" onClick={this.handleInformationOnClick.bind(this)}>详情</button>
                  </td>
              </tr>
          );
-     }*/
-    /* render() {
+     }
+     render() {
          if (this.state.edit) {
              return this.companyDom();
          } else {
              return this.companyRom();
          }
-     }*/
+     }
 }
 export default  Companylist;
