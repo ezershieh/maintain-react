@@ -52,10 +52,22 @@ class Content extends Component {
     handleCompanyformOnClick(){
         this.props.handleCompanyformOnClick(1);
     }
+
+    handleCreateProject(){
+        this.props.handleOnMenuChange(0);
+    }
+
+    handleCreateProjectClick(){
+        this.props.handleOnMenuChange(3);
+    }
+
+
     render() {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
+                                  handleCreateProjectClick = {this.handleCreateProjectClick.bind(this)}
+                                  handleProjectEditClick = {this.handleProjectEditClick.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
                                   handleAlertHidden={this.handleAlertHidden.bind(this)}
                                   contentIndex={this.state.contentIndex} ref="projects"/>);
@@ -64,12 +76,12 @@ class Content extends Component {
                                       handleInformationOnClick={this.handleInformationOnClick.bind(this)}
                 />);
             case 2:
-                return (<ProjectDetail handleProjectListOnClick={this.handleProjectListOnClick.bind(this)}
+                return (<ProjectDetail handleCreateProject={this.handleCreateProject.bind(this)}
                                        project={this.state.project}/>);
             case 3:
-                return (<ProjectCreate isCreate = {true}></ProjectCreate>);
+                return (<ProjectCreate isCreate = {true} handleCreateProject={this.handleCreateProject.bind(this)}></ProjectCreate>);
             case 4:
-                return (<div></div>);
+                return (<ProjectCreate isCreate = {false} project={this.state.project} handleCreateProject={this.handleCreateProject.bind(this)}></ProjectCreate>);
             case 5:
                 return (<Information handleCompanyformOnClick={this.handleCompanyformOnClick.bind(this)}
                                         company={this.state.company}/>);

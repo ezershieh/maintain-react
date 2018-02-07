@@ -35,6 +35,11 @@ export default class Projects extends Component {
         this.props.handleAlertHidden();
     }
 
+    handleProjectEditClick(project){
+        console.log("项目编辑");
+        this.props.handleProjectEditClick(project);
+    }
+
     handleProjectDetailClick(project) {
         this.props.handleProjectDetailOnClick(project);
     }
@@ -57,6 +62,7 @@ export default class Projects extends Component {
                 this.state.projects.map(project =>
                     <Project handleProjectDetailClick={this.handleProjectDetailClick.bind(this)}
                              handleDeleteClick={this.handleDeleteClick.bind(this)}
+                             handleProjectEditClick={this.handleProjectEditClick.bind(this)}
                              key={project.id} project={project}/>)
             );
         } else {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Input, Button, DatePicker, Select, Radio} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
+import moment from 'moment';
 import 'moment/locale/zh-cn';
 import * as common from '../../utils/common';
 import * as RecordsAPI from '../../utils/RecordsAPI';
@@ -16,9 +17,20 @@ class ProjectCreate extends Component {
                 project: {}
             }
         } else {
+            console.log(props.project);
+            let project = props.project;
+            let date = new Date(props.project.planStartDate);
+            console.log(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+            project.planStartDate = moment(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(), "YYYY-MM-DD");
+            date = new Date(props.project.planEndDate);
+            console.log(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+            project.planEndDate = moment(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(), "YYYY-MM-DD");
             this.state = {
-                project: props.project
+                members: [],
+                companys: [],
+                project: project
             }
+            console.log(this.state.project);
         }
     }
 
@@ -53,7 +65,7 @@ class ProjectCreate extends Component {
 
         let projectCompanyData = {
             uId: RecordsAPI.uId,
-            pId: 34
+            pId: RecordsAPI.companyId
         }
         RecordsAPI.getProjectsCompany(projectCompanyData).then(
             response => {
@@ -136,54 +148,70 @@ class ProjectCreate extends Component {
         }
         this.setState({
             ...this.state,
-            project:project
+            project: project
         });
         console.log(this.state.project);
     }
 
     handleSubmit() {
-        let startDate,endDate;
+        let startDate, endDate;
         startDate = this.state.project.planStartDate.format('YYYY-MM-DD HH:mm:ss');
         endDate = this.state.project.planEndDate.format('YYYY-MM-DD HH:mm:ss');
 
         let data = {
-            uId:RecordsAPI.uId,
-            startData:startDate,
-            endDate:endDate,
-            name:this.state.project.name,
-            bidState:this.state.project.bidState,
-            owenerUnitId:this.state.project.owenerUnitId,
-            constructUnitId:this.state.project.constructUnitId,
-            depId:RecordsAPI.companyId,
-            managerId:this.state.project.managerId
+            uId: RecordsAPI.uId,
+            startData: startDate,
+            endDate: endDate,
+            name: this.state.project.name,
+            bidState: this.state.project.bidState,
+            owenerUnitId: this.state.project.owenerUnitId,
+            constructUnitId: this.state.project.constructUnitId,
+            depId: RecordsAPI.companyId,
+            managerId: this.state.project.managerId
         }
-        if(typeof (this.state.project.auditPersonId)!=="undefined"&&this.state.project.auditPersonId!=null){
-            data={
+        if (typeof (this.state.project.auditPersonId) !== "undefined" && this.state.project.auditPersonId != null) {
+            data = {
                 ...data,
-                auditPersonId:this.state.project.auditPersonId
+                auditPersonId: this.state.project.auditPersonId
             }
         }
-        if(typeof (this.state.project.mark)!=="undefined"){
-            data={
+        if (typeof (this.state.project.mark) !== "undefined") {
+            data = {
                 ...data,
-                mark:this.state.project.mark
+                mark: this.state.project.mark
             }
         }
-        if(typeof (this.state.project.caption)!=="undefined"){
-            data={
+        if (typeof (this.state.project.caption) !== "undefined") {
+            data = {
                 ...data,
-                caption:this.state.project.caption
+                caption: this.state.project.caption
             }
         }
-        RecordsAPI.createProject(data).then(
-            response =>{
-                if(response.code===1){
-                    this.props.handleCreateProject();
-                }
-            },
-            error=>{
-                console.log(error);
-            });
+        if (this.props.isCreate) {
+            RecordsAPI.createProject(data).then(
+                response => {
+                    if (response.code === 1) {
+                        this.props.handleCreateProject();
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
+        }else{
+            data = {
+                ...data,
+                pId: this.state.project.id
+            }
+            RecordsAPI.updateProject(data).then(
+                response => {
+                    if (response.code === 1) {
+                        this.props.handleCreateProject();
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
+        }
     }
 
     render() {
@@ -211,141 +239,24 @@ class ProjectCreate extends Component {
             },
         };
         if (this.props.isCreate === true) {
-            return (<Form className="pt-4">
-                <FormItem
-                    {...formItemLayout}
-                    label="项目名称"
-                >
-                    <Input placeholder="输入项目名称" id="name" maxLength="20"
-                           name="name"
-                           onChange={this.handleInputChange.bind(this)}
-                           value={this.state.project.name}/>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="项目负责人"
-                >
-                    <Select placeholder="选择项目负责人"
-                            onChange={this.handleSelectChange.bind(this)}
-                            value={this.state.project.managerId}>
-                        {this.state.members.map(
-                            member => <Option value={member.id} key={member.id}
-                                              ref="managerId">{member.createName}</Option>
-                        )}
-                    </Select>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="投标状态"
-                >
-                    <RadioGroup className="form-control pl-2"
-                                name="bidState"
-                                onChange={this.handleInputChange.bind(this)}
-                                value={this.state.project.bidState}>
-                        <Radio value="0" checked="checked" ref={"bidState"}>未中标</Radio>
-                        <Radio value="1" ref={"bidState"}>已中标</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="项目状态"
-                >
-                    <RadioGroup className="form-control pl-2"
-                                name="projectState"
-                                onChange={this.handleInputChange.bind(this)}
-                                value={this.state.project.projectState}>
-                        <Radio value="0" checked="checked" ref={"projectState"}>未开工</Radio>
-                        <Radio value="1" ref={"projectState"}>已开工</Radio>
-                        <Radio value="2" ref={"projectState"}>已完工</Radio>
-                        <Radio value="3" ref={"projectState"}>已停工</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="项目原定计划日期"
-                >
-                    <RangePicker placeholder={["选择开始日期", "选择结束日期"]}
-                                 name={"date"} format={"YYYY-MM-DD"}
-                                 onChange={this.rangePickerChange.bind(this)}
-                                 value={[this.state.project.planStartDate,this.state.project.planEndDate]}
-                    />
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="业主单位"
-                >
-                    <Select placeholder="选择业主单位"
-                            onChange={this.handleSelectChange.bind(this)}
-                            value={this.state.project.owenerUnitId}>
-                        {this.state.companys.map(company => <Option value={company.id} ref={"owenerUnitId"}
-                                                                    key={company.id}>{company.name}</Option>)}
-                    </Select>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="建设单位"
-                >
-                    <Select placeholder="选择建设单位"
-                            onChange={this.handleSelectChange.bind(this)}
-                            value={this.state.project.constructUnitId}>
-                        {this.state.companys.map(company => <Option value={company.id} ref={"constructUnitId"}
-                                                                    key={company.id}>{company.name}</Option>)}
-                    </Select>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="项目备注"
-                >
-                    <TextArea placeholder="输入项目备注(选填)" id="mark"
-                              name="mark"
-                              onChange={this.handleInputChange.bind(this)}
-                              value={this.state.project.mark}/>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="项目说明"
-                >
-                    <TextArea placeholder="输入项目说明(选填)" id="caption"
-                              name="caption"
-                              onChange={this.handleInputChange.bind(this)}
-                              value={this.state.project.caption}/>
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="审核人"
-                >
-                    <Select placeholder="选择审核人(选填)" allowClear={true}
-                            onChange={this.handleSelectChange.bind(this)}
-                    >
-                        {this.state.members.map(member => <Option value={member.id} ref={"auditPersonId"}
-                                                                  key={member.id}>{member.createName}</Option>)}
-                    </Select>
-                </FormItem>
-                <FormItem
-                    wrapperCol={{
-                        xs: {span: 24, offset: 0},
-                        sm: {span: 16, offset: 8},
-                    }}
-                >
-                    <Button type="primary" onClick={this.handleSubmit.bind(this)}
-                            disabled={!this.isCanSubmit()}>{buttonText}</Button>
-                </FormItem>
-            </Form>);
-        } else {
             return (
                 <Form className="pt-4">
                     <FormItem
                         {...formItemLayout}
                         label="项目名称"
                     >
-                        <Input placeholder="输入项目名称" id="name" maxLength="20"/>
+                        <Input placeholder="输入项目名称" id="name" maxLength="20"
+                               name="name"
+                               onChange={this.handleInputChange.bind(this)}
+                               value={this.state.project.name}/>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="项目负责人"
                     >
-                        <Select placeholder="选择项目负责人">
-                            {this.state.members.map(member => <Option value={member.id}
+                        <Select placeholder="选择项目负责人" onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.managerId}>
+                            {this.state.members.map(member => <Option value={member.id} ref={"managerId"}
                                                                       key={member.id}>{member.createName}</Option>)}
                         </Select>
                     </FormItem>
@@ -353,34 +264,46 @@ class ProjectCreate extends Component {
                         {...formItemLayout}
                         label="投标状态"
                     >
-                        <RadioGroup className="form-control pl-2">
-                            <Radio value="0">未中标</Radio>
-                            <Radio value="1">已中标</Radio>
+                        <RadioGroup className="form-control pl-2"
+                                    name="bidState"
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.project.bidState}>
+                            <Radio value={0} checked="checked" ref={"bidState"}>未中标</Radio>
+                            <Radio value={1} ref={"bidState"}>已中标</Radio>
                         </RadioGroup>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="项目状态"
                     >
-                        <RadioGroup className="form-control pl-2">
-                            <Radio value="0">未开工</Radio>
-                            <Radio value="1">已开工</Radio>
-                            <Radio value="2">已完工</Radio>
-                            <Radio value="3">已停工</Radio>
+                        <RadioGroup className="form-control pl-2"
+                                    name="projectState"
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.project.projectState}>
+                            <Radio value={0} checked="checked" ref={"projectState"}>未开工</Radio>
+                            <Radio value={1} ref={"projectState"}>已开工</Radio>
+                            <Radio value={2} ref={"projectState"}>已完工</Radio>
+                            <Radio value={3} ref={"projectState"}>已停工</Radio>
                         </RadioGroup>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="项目原定计划日期"
                     >
-                        <RangePicker placeholder={["选择开始日期", "选择结束日期"]}/>
+                        <RangePicker placeholder={["选择开始日期", "选择结束日期"]}
+                                     name={"date"} format={"YYYY-MM-DD"}
+                                     onChange={this.rangePickerChange.bind(this)}
+                                     value={[this.state.project.planStartDate, this.state.project.planEndDate]}
+                        />
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="业主单位"
                     >
-                        <Select placeholder="选择业主单位">
-                            {this.state.companys.map(company => <Option value={company.id}
+                        <Select placeholder="选择业主单位"
+                                onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.owenerUnitId}>
+                            {this.state.companys.map(company => <Option value={company.id} ref={"owenerUnitId"}
                                                                         key={company.id}>{company.name}</Option>)}
                         </Select>
                     </FormItem>
@@ -388,8 +311,10 @@ class ProjectCreate extends Component {
                         {...formItemLayout}
                         label="建设单位"
                     >
-                        <Select placeholder="选择建设单位">
-                            {this.state.companys.map(company => <Option value={company.id}
+                        <Select placeholder="选择建设单位"
+                                onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.constructUnitId}>
+                            {this.state.companys.map(company => <Option value={company.id} ref={"constructUnitId"}
                                                                         key={company.id}>{company.name}</Option>)}
                         </Select>
                     </FormItem>
@@ -397,40 +322,30 @@ class ProjectCreate extends Component {
                         {...formItemLayout}
                         label="项目备注"
                     >
-                        <Input placeholder="输入项目备注(选填)" id="mark"/>
+                    <TextArea placeholder="输入项目备注(选填)" id="mark"
+                              name="mark"
+                              onChange={this.handleInputChange.bind(this)}
+                              value={this.state.project.mark}/>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="项目说明"
                     >
-                        <Input placeholder="输入项目说明(选填)" id="caption"/>
+                    <TextArea placeholder="输入项目说明(选填)" id="caption"
+                              name="caption"
+                              onChange={this.handleInputChange.bind(this)}
+                              value={this.state.project.caption}/>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
                         label="审核人"
                     >
-                        <Select placeholder="选择审核人(选填)">
-                            {this.state.members.map(member => <Option value={member.id}
+                        <Select placeholder="选择审核人(选填)" allowClear={true}
+                                onChange={this.handleSelectChange.bind(this)}
+                        >
+                            {this.state.members.map(member => <Option value={member.id} ref={"auditPersonId"}
                                                                       key={member.id}>{member.createName}</Option>)}
                         </Select>
-                    </FormItem>
-                    <FormItem
-                        {...formItemLayout}
-                        label="审核日期"
-                    >
-                        <Input placeholder="输入审核日期" id="auditDate" disabled="true"/>
-                    </FormItem>
-                    <FormItem
-                        {...formItemLayout}
-                        label="创建人"
-                    >
-                        <Input placeholder="输入创建人" id="createPersion" disabled="true"/>
-                    </FormItem>
-                    <FormItem
-                        {...formItemLayout}
-                        label="创建日期"
-                    >
-                        <Input placeholder="创建日期" id="createDate" disabled="true"/>
                     </FormItem>
                     <FormItem
                         wrapperCol={{
@@ -439,7 +354,127 @@ class ProjectCreate extends Component {
                         }}
                     >
                         <Button type="primary" onClick={this.handleSubmit.bind(this)}
-                                disable={false}>{buttonText}</Button>
+                                disabled={!this.isCanSubmit()}>{buttonText}</Button>
+                    </FormItem>
+                </Form>);
+        } else {
+            return (
+                <Form className="pt-4">
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目名称"
+                    >
+                        <Input placeholder="输入项目名称" maxLength="20"
+                               name="name"
+                               onChange={this.handleInputChange.bind(this)}
+                               value={this.state.project.name}/>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目负责人"
+                    >
+                        <Select placeholder="选择项目负责人"
+                                onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.managerId}>
+                            {this.state.members.map(member => <Option value={member.id} ref={"managerId"}
+                                                                      key={member.id}>{member.createName}</Option>)}
+                        </Select>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="投标状态"
+                    >
+                        <RadioGroup className="form-control pl-2"
+                                    name="bidState"
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.project.bidState}
+                        >
+                            <Radio value={0} ref={"bidState"}>未中标</Radio>
+                            <Radio value={1} ref={"bidState"}>已中标</Radio>
+                        </RadioGroup>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目状态"
+                    >
+                        <RadioGroup className="form-control pl-2"
+                                    name="projectState"
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.project.projectState}>
+                            <Radio value={0} ref={"projectState"}>未开工</Radio>
+                            <Radio value={1} ref={"projectState"}>已开工</Radio>
+                            <Radio value={2} ref={"projectState"}>已完工</Radio>
+                            <Radio value={3} ref={"projectState"}>已停工</Radio>
+                        </RadioGroup>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目原定计划日期"
+                    >
+                        <RangePicker placeholder={["选择开始日期", "选择结束日期"]}
+                                     name={"date"} format={"YYYY-MM-DD"}
+                                     onChange={this.rangePickerChange.bind(this)}
+                                     value={[this.state.project.planStartDate, this.state.project.planEndDate]}
+                        />
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="业主单位"
+                    >
+                        <Select placeholder="选择业主单位"
+                                onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.owenerUnitId}>
+                            {this.state.companys.map(company => <Option value={company.id} ref={"owenerUnitId"}
+                                                                        key={company.id}>{company.name}</Option>)}
+                        </Select>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="建设单位"
+                    >
+                        <Select placeholder="选择建设单位"
+                                onChange={this.handleSelectChange.bind(this)}
+                                value={this.state.project.constructUnitId}>
+                            {this.state.companys.map(company => <Option value={company.id} ref={"constructUnitId"}
+                                                                        key={company.id}>{company.name}</Option>)}
+                        </Select>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目备注"
+                    >
+                        <TextArea placeholder="输入项目备注(选填)" id="mark"
+                                  name="mark"
+                                  onChange={this.handleInputChange.bind(this)}
+                                  value={this.state.project.mark}/>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="项目说明"
+                    >
+                        <TextArea placeholder="输入项目说明(选填)" id="caption"
+                                  name="caption"
+                                  onChange={this.handleInputChange.bind(this)}
+                                  value={this.state.project.caption}/>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="审核人"
+                    >
+                        <Select placeholder="选择审核人(选填)" allowClear={true}
+                                onChange={this.handleSelectChange.bind(this)}>
+                            {this.state.members.map(member => <Option value={member.id} ref={"auditPersonId"}
+                                                                      key={member.id}>{member.createName}</Option>)}
+                        </Select>
+                    </FormItem>
+                    <FormItem
+                        wrapperCol={{
+                            xs: {span: 24, offset: 0},
+                            sm: {span: 16, offset: 8},
+                        }}
+                    >
+                        <Button type={"primary"} onClick={this.handleSubmit.bind(this)}
+                                disabled={!this.isCanSubmit()}>{buttonText}</Button>
                     </FormItem>
                 </Form>);
         }
