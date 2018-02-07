@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, DatePicker, Col} from 'antd';
+import { Button, Modal, Form, Input} from 'antd';
 import './Companylist.css'
+import * as RecordsAPI from '../../utils/RecordsAPI'
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: {
@@ -27,25 +28,25 @@ const CollectionCreateForm = Form.create()(
                 onOk={onCreate}
             >
                 <Form layout="vertical" >
-                    <FormItem label="公司名称" >
-                        {getFieldDecorator('title', {
+                    <FormItem label="公司名称">
+                        {getFieldDecorator('name', {
                             rules: [{ required: true, message: '公司名称不能为空!' }],
                         })(
                             <Input />
                         )}
                     </FormItem>
                     <FormItem label="公司负责人">
-                        {getFieldDecorator('person',{
+                        {getFieldDecorator('managerName',{
                             rules: [{ required: true, message: '公司负责人不能为空!' }],
                         })(
                             <Input type="textarea" />
                         )}
                     </FormItem>
                     <FormItem label="电话号码">
-                        {getFieldDecorator('telephone',{
+                        {getFieldDecorator('managerPhone',{
                             rules: [{ required: true, message: '电话号码不能为空!' }],
                         })(
-                            <Input  type="textarea" />
+                            <Input  type="number" maxlength="11"/>
                         )}
                     </FormItem>
                     <FormItem label="备注">
@@ -57,13 +58,6 @@ const CollectionCreateForm = Form.create()(
     }
 );
 class Create_mask extends Component {
-    /* handleSubmit(){
-         const data ={
-             name:this.state.name,
-             managerName:this.state.managerName,
-             managerPhone:this.state.managerPhone
-         }
-     }*/
     state = {
         visible: false,
     };
@@ -79,10 +73,30 @@ class Create_mask extends Component {
             if (err) {
                 return;
             }
-
+            this.props.handleNewRecord(values)
             console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
+            let data={
+                name: values.name,
+                managerName: values.managerName,
+                managerPhone:  values.managerPhone,
+                uId: RecordsAPI.uId
+            }
+            console.log(data)
+            RecordsAPI.createProjectsCompany(data).then(
+                response => {
+                    /*this.props.handleNewRecord({
+                        companyform:[...companyform,response.data.data]
+                    })*/
+
+                    console.log(response.data);
+                    this.props.handleNewRecord(response.data);
+                }
+
+            ).catch(
+                error => console.log(error.message)
+            )
         });
     }
     saveFormRef = (form) => {
@@ -91,7 +105,7 @@ class Create_mask extends Component {
     render() {
         return(
             <div>
-                <Button type="primary" onClick={this.showModal} className="btncre">创建公司</Button>
+                <button type="primary" onClick={this.showModal} className="btn btn-info mr-1 btncre">创建公司</button>
                 <CollectionCreateForm
                     ref={this.saveFormRef}
                     visible={this.state.visible}
@@ -103,8 +117,5 @@ class Create_mask extends Component {
     }
 }
 export default Create_mask;
-
-
-
 
 

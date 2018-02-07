@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row ,List} from 'antd';
 class Information extends Component {
     constructor(props){
         console.log("公司详情");
@@ -17,8 +17,8 @@ class Information extends Component {
         createDate = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
         return (
             <div>
-                <h3>公司详情</h3>
-                <ul className="list-group">
+                <h3>公司名称:><small>{this.props.company.name}</small></h3>
+                <List className="list-group">
                     <li className="list-group-item">
                         <p className="navbar-text">公司名称: <span className="proname" id="proname">{this.props.company.name}</span></p>
                     </li>
@@ -26,7 +26,7 @@ class Information extends Component {
                         <p className="navbar-text">公司负责人：<span className="forperson" id="forperson">{this.props.company.managerName}</span></p>
                     </li>
                     <li className="list-group-item">
-                        <p className="navbar-text">联系人电话：<span className="forperson" id="forperson">{this.props.company.managerPhone}</span></p>
+                        <p className="navbar-text">联系人电话：<span className="forperson" id="forphone">{this.props.company.managerPhone}</span></p>
                     </li>
                     <li className="list-group-item">
                         <p className="navbar-text">建设单位： <span className="build" id="build">厦门承建有限公司</span></p>
@@ -39,7 +39,7 @@ class Information extends Component {
                             <p className="navbar-text">备注: <div className="discribe" id="discribe">我的描述详情</div></p>
                         </div>
                     </li>
-                </ul>
+                </List>
                 <div style={{ background: '#ECECEC', padding: '30px' }}>
                     <Row gutter={16}>
                         <Col span={8}>

@@ -16,13 +16,15 @@ class Companylist extends Component {
             edit: !this.state.edit
         });
     }
+    /*编辑*/
     handleEdit(event) {
         event.preventDefault();
-        const companyform = {
+        const companyform= {
             name: this.refs.name.value,
             managerName: this.refs.managerName.value,
-            managerName: this.refs.managerPhone.value
+            managerPhone: this.refs.managerPhone.value
         }
+        console.log(companyform)
         /*数据请求响应，编辑后数据直接实时呈现*/
         let PostData = {
             uId: RecordsAPI.uId,
@@ -61,7 +63,8 @@ class Companylist extends Component {
             cId: this.props.companyform.id
         }
         RecordsAPI.removeProjectsCompany(postDatas).then(
-            response => this.props.handleDeleteClick(this.props.companyform)
+            response =>
+                this.props.handleDeleteClick(this.props.companyform)
 
         ).catch(
             error => console.log(error.message)

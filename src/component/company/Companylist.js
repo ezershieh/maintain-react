@@ -54,11 +54,10 @@ class Companylist extends Component {
     }
 
     addRecord(companyform) {
+        console.log(companyform)
         this.setState({
-            error: null,
-            isLoaded: true,
-            compantlist: [
-                ...this.state.companylist,
+            companylist: [
+                 ...this.state.companylist,
                 companyform
             ]
         })

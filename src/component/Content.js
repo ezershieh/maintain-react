@@ -52,21 +52,10 @@ class Content extends Component {
     handleCompanyformOnClick(){
         this.props.handleCompanyformOnClick(1);
     }
-
-    handleCreateProject(){
-        this.props.handleOnMenuChange(0);
-    }
-
-    handleCreateProjectClick(){
-        this.props.handleOnMenuChange(3);
-    }
-
-
     render() {
         switch (this.props.index) {
             case 0:
                 return (<Projects handleProjectDetailOnClick={this.handleProjectDetailOnClick.bind(this)}
-                                  handleCreateProjectClick = {this.handleCreateProjectClick.bind(this)}
                                   handleAlertShow = {this.handleAlertShow.bind(this)}
                                   handleAlertHidden={this.handleAlertHidden.bind(this)}
                                   contentIndex={this.state.contentIndex} ref="projects"/>);
@@ -75,10 +64,10 @@ class Content extends Component {
                                       handleInformationOnClick={this.handleInformationOnClick.bind(this)}
                 />);
             case 2:
-                return (<ProjectDetail handleCreateProject={this.handleCreateProject.bind(this)}
+                return (<ProjectDetail handleProjectListOnClick={this.handleProjectListOnClick.bind(this)}
                                        project={this.state.project}/>);
             case 3:
-                return (<ProjectCreate isCreate = {true} handleCreateProject={this.handleCreateProject.bind(this)}></ProjectCreate>);
+                return (<ProjectCreate isCreate = {true}></ProjectCreate>);
             case 4:
                 return (<div></div>);
             case 5:
