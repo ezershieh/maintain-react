@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Projects from './project/Projects';
 import ProjectDetail from './project/ProjectDetail';
 import ProjectCreate from './project/ProjectCreate';
-import Companylist from './company/Companylist';
+import Companylist from './company/Companylistl';
 import Information from './company/Information';
 class Content extends Component {
 
@@ -61,6 +61,9 @@ class Content extends Component {
         this.props.handleOnMenuChange(3);
     }
 
+    handleProjectEditClick(){
+        this.props.handleOnMenuChange(4);
+    }
 
     render() {
         switch (this.props.index) {

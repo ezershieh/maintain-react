@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input} from 'antd';
+import {  Modal, Form, Input} from 'antd';
 import './Companylist.css'
 import * as RecordsAPI from '../../utils/RecordsAPI'
 const FormItem = Form.Item;
@@ -86,10 +86,6 @@ class Create_mask extends Component {
             console.log(data)
             RecordsAPI.createProjectsCompany(data).then(
                 response => {
-                    /*this.props.handleNewRecord({
-                        companyform:[...companyform,response.data.data]
-                    })*/
-
                     console.log(response.data);
                     this.props.handleNewRecord(response.data);
                 }

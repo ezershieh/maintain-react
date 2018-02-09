@@ -10,7 +10,7 @@ class Companylist extends Component {
             edit: false
         };
     }
-   /* 编辑*/
+
     handleToggle(){
         this.setState({
             edit: !this.state.edit
@@ -19,18 +19,17 @@ class Companylist extends Component {
     /*编辑*/
     handleEdit(event) {
         event.preventDefault();
-        const companyform= {
+
+        /*数据请求响应，编辑后数据直接实时呈现*/
+        let PostData = {
+            uId: RecordsAPI.uId,
+            cId: this.props.companyform.id,
             name: this.refs.name.value,
             managerName: this.refs.managerName.value,
             managerPhone: this.refs.managerPhone.value
         }
-        console.log(companyform)
-        /*数据请求响应，编辑后数据直接实时呈现*/
-        let PostData = {
-            uId: RecordsAPI.uId,
-            cId: this.props.companyform.id
-        }
-        RecordsAPI.updateProjectsCompany(PostData,companyform).then(
+        console.log( PostData)
+        RecordsAPI.updateProjectsCompany(PostData).then(
             response => {
                 console.log(response)
                 this.setState({
